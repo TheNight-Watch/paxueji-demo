@@ -1,0 +1,27 @@
+[package]
+name = "o5-app"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "o5-harness-rs"
+path = "src/main.rs"
+
+[dependencies]
+o5-protocol = { workspace = true }
+o5-config = { workspace = true }
+o5-perf = { workspace = true }
+o5-tools = { workspace = true }
+o5-audio = { workspace = true }
+o5-session = { workspace = true }
+o5-asr = { workspace = true }
+o5-delegation = { workspace = true }
+o5-camera = { workspace = true }
+o5-ui = { workspace = true }
+serde_json = { workspace = true }
+log = { workspace = true }
+crossbeam-channel = { workspace = true }
+chrono = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = { workspace = true }

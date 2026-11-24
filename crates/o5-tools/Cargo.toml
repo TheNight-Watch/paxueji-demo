@@ -1,0 +1,11 @@
+[package]
+name = "o5-tools"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ureq.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+log.workspace = true
+chrono.workspace = true

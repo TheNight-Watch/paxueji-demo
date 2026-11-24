@@ -1,0 +1,14 @@
+[package]
+name = "o5-delegation"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ureq.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+log.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+o5-config.workspace = true
+o5-tools.workspace = true

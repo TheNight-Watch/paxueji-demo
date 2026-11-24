@@ -1,0 +1,62 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/o5-protocol",
+    "crates/o5-config",
+    "crates/o5-perf",
+    "crates/o5-tools",
+    "crates/o5-audio",
+    "crates/o5-session",
+    "crates/o5-asr",
+    "crates/o5-delegation",
+    "crates/o5-camera",
+    "crates/o5-ui",
+    "crates/o5-app",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+o5-protocol = { path = "crates/o5-protocol" }
+o5-config = { path = "crates/o5-config" }
+o5-perf = { path = "crates/o5-perf" }
+o5-tools = { path = "crates/o5-tools" }
+o5-audio = { path = "crates/o5-audio" }
+o5-session = { path = "crates/o5-session" }
+o5-asr = { path = "crates/o5-asr" }
+o5-delegation = { path = "crates/o5-delegation" }
+o5-camera = { path = "crates/o5-camera" }
+o5-ui = { path = "crates/o5-ui" }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+crossbeam-channel = "0.5"
+crossbeam-utils = "0.8"
+rustfft = "6.2"
+hound = "3.5"
+sha2 = "0.10"
+uuid = { version = "1", features = ["v4"] }
+libc = "0.2"
+log = "0.4"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+
+# TLS 栈：纯 Rust（ring 由 zig cc 交叉编译，已验证 aarch64 可出包）
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12", "logging"] }
+rustls-pki-types = "1"
+webpki-roots = "0.26"
+tungstenite = { version = "0.26", features = ["rustls-tls-webpki-roots"] }
+ureq = { version = "2", features = ["tls"] }
+
+ab_glyph = "0.2"
+jpeg-encoder = { version = "0.6", features = ["simd"] }
+jpeg-decoder = "0.3"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = true

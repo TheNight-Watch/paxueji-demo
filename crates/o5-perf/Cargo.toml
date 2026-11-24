@@ -1,0 +1,12 @@
+[package]
+name = "o5-perf"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+libc.workspace = true
+log.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

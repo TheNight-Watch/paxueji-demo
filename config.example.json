@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "foreground": {
+    "endpoint": "wss://api.ea.modelbest.co/v1/realtime",
+    "apiKey": "",
+    "protocolVersion": "4",
+    "mode": "audio",
+    "omniMode": "omni",
+    "queueGate": true,
+    "progressTimeoutSeconds": 60,
+    "ackTimeoutSeconds": 30,
+    "connectTimeoutSeconds": 15,
+    "tlsInsecureSkipVerify": true,
+    "shellPrompt": "",
+    "refAudioSegment": true,
+    "taskPrompt": "",
+    "initPayload": {},
+    "voice": "builtin:ref_minicpm_signature_fix.wav"
+  },
+  "vacuum": {
+    "enabled": false,
+    "url": "",
+    "token": "",
+    "entityId": "vacuum.zhui_mi_w10s_pro"
+  },
+  "background": {
+    "enabled": false,
+    "endpoint": "",
+    "apiKey": "",
+    "model": "",
+    "timeoutSeconds": 120,
+    "maxConcurrent": 2,
+    "systemPrompt": "",
+    "maxResultChars": 1200
+  },
+  "audio": {
+    "inputVolume": 100,
+    "outputVolume": 80,
+    "outputSampleRate": 24000,
+    "micGateWhilePlaying": false,
+    "gateTailMs": 200,
+    "micDebugDump": false,
+    "micDumpPath": "/root/o5_harness/o5_mic_debug.pcm",
+    "maxSessionMinutes": 0
+  },
+  "video": {
+    "enabled": true,
+    "jpegQuality": 60,
+    "width": 640,
+    "height": 480,
+    "hmirror": false,
+    "vflip": false
+  },
+  "log": {
+    "file": "",
+    "level": "info"
+  },
+  "tools": {
+    "tavilyApiKey": "",
+    "serperApiKey": "",
+    "braveApiKey": "",
+    "amapApiKey": "",
+    "amapServiceHost": ""
+  },
+  "asr": {
+    "enabled": false,
+    "endpoint": "wss://tts-center.ea.modelbest.co/api/v1/asr/realtime",
+    "apiKey": "",
+    "serviceId": 2,
+    "maxReconnects": 3,
+    "gateWhilePlaying": true
+  },
+  "network": {
+    "mode": "wifi",
+    "usbRelay": {
+      "host": "",
+      "portMap": {}
+    }
+  }
+}

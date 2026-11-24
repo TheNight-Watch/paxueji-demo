@@ -1,0 +1,13 @@
+[package]
+name = "o5-audio"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+o5-config = { workspace = true }
+o5-perf = { workspace = true }
+o5-protocol = { workspace = true }
+rustfft = { workspace = true }
+serde_json = { workspace = true }
+log = { workspace = true }
+libc = { workspace = true }

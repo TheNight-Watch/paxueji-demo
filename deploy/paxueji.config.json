@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "foreground": {
+    "endpoint": "wss://api.ea.modelbest.co/lab/v1/realtime?dialect=semantic-v5",
+    "apiKey": "",
+    "protocolVersion": "5",
+    "mode": "omni",
+    "omniMode": "omni",
+    "queueGate": true,
+    "progressTimeoutSeconds": 60,
+    "ackTimeoutSeconds": 30,
+    "connectTimeoutSeconds": 15,
+    "tlsInsecureSkipVerify": false,
+    "shellPrompt": "",
+    "refAudioSegment": true,
+    "taskPrompt": "",
+    "initPayload": {},
+    "voice": "builtin:ref_minicpm_signature_fix.wav",
+    "autoStartSession": true
+  },
+  "vacuum": {
+    "enabled": false,
+    "url": "",
+    "token": "",
+    "entityId": ""
+  },
+  "background": {
+    "enabled": false,
+    "endpoint": "",
+    "apiKey": "",
+    "model": "",
+    "timeoutSeconds": 120,
+    "maxConcurrent": 2,
+    "systemPrompt": "",
+    "maxResultChars": 1200
+  },
+  "audio": {
+    "inputVolume": 100,
+    "outputVolume": 40,
+    "outputSampleRate": 24000,
+    "micGateWhilePlaying": true,
+    "gateTailMs": 800,
+    "micDebugDump": false,
+    "micDumpPath": "/root/paxueji/mic_debug.pcm",
+    "maxSessionMinutes": 0,
+    "echoMode": "subband",
+    "micDuckWhilePlaying": 0.2
+  },
+  "video": {
+    "enabled": true,
+    "jpegQuality": 60,
+    "width": 640,
+    "height": 480,
+    "hmirror": false,
+    "vflip": false
+  },
+  "log": {
+    "file": "",
+    "level": "info"
+  },
+  "tools": {
+    "tavilyApiKey": "",
+    "serperApiKey": "",
+    "braveApiKey": "",
+    "amapApiKey": "",
+    "amapServiceHost": ""
+  },
+  "asr": {
+    "enabled": false,
+    "endpoint": "wss://tts-center.ea.modelbest.co/api/v1/asr/realtime",
+    "apiKey": "",
+    "serviceId": 2,
+    "maxReconnects": 3,
+    "gateWhilePlaying": true
+  },
+  "network": {
+    "mode": "wifi",
+    "usbRelay": {
+      "host": "",
+      "portMap": {}
+    }
+  }
+}

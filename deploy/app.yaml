@@ -1,0 +1,8 @@
+id: paxueji
+name: Paxueji
+name[zh]: 拍学机
+icon: icon.png
+version: 0.1.0
+author: ModelBest
+desc: Point, shoot and learn with MiniCPM-o 5
+desc[zh]: 对准身边的东西拍一下，小松果老师用 MiniCPM-o 5 讲给你听，还能随时追问、联网查询

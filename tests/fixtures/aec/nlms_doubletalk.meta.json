@@ -1,0 +1,16 @@
+{
+  "sample_rate": 16000,
+  "block_ms": 25,
+  "blocks": 960,
+  "echo_delay_s": 0.53,
+  "class": "EchoCanceler",
+  "stats": {
+    "erle_db": 38.890473570989414,
+    "delay_ms": 529.99936036149,
+    "adapted": true,
+    "locked": true,
+    "far_s": 24.0,
+    "near_s": 24.0
+  },
+  "tail_erle_db": 6.634376222657758
+}

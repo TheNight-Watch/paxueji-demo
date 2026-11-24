@@ -1,0 +1,42 @@
+{
+  "s16_16k_mono": {
+    "input_bytes": 88,
+    "output_bytes": 88,
+    "passthrough": true
+  },
+  "s16_16k_stereo": {
+    "input_bytes": 96,
+    "output_bytes": 70,
+    "passthrough": false
+  },
+  "s16_44k1_mono": {
+    "input_bytes": 86,
+    "output_bytes": 58,
+    "passthrough": false
+  },
+  "s16_32k_stereo": {
+    "input_bytes": 92,
+    "output_bytes": 56,
+    "passthrough": false
+  },
+  "u8_16k_mono": {
+    "input_bytes": 61,
+    "output_bytes": 78,
+    "passthrough": false
+  },
+  "u8_12k_stereo": {
+    "input_bytes": 62,
+    "output_bytes": 68,
+    "passthrough": false
+  },
+  "s32_16k_mono": {
+    "input_bytes": 80,
+    "output_bytes": 62,
+    "passthrough": false
+  },
+  "s32_24k_stereo": {
+    "input_bytes": 100,
+    "output_bytes": 52,
+    "passthrough": false
+  }
+}

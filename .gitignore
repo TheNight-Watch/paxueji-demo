@@ -1,0 +1,15 @@
+/target
+*.o5tmp
+__pycache__/
+tests/device/reports/
+# 由 tests/device/make_assets.sh 在 macOS 本机生成（素材来自系统自带图片与语音，不随仓库分发）
+tests/device/audio/
+tests/device/images/企鹅.png
+tests/device/images/向日葵.png
+tests/device/images/模糊向日葵.png
+tests/device/images/小提琴.png
+tests/device/images/仙人掌.png
+tests/device/images/树叶.png
+tests/device/images/猫头鹰.png
+tests/device/images/篮球.png
+tests/device/images/斑马.png

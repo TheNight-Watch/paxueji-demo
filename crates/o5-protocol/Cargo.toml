@@ -1,0 +1,11 @@
+[package]
+name = "o5-protocol"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+base64.workspace = true
+log.workspace = true
+uuid.workspace = true

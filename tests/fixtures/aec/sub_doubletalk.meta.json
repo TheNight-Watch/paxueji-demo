@@ -1,0 +1,17 @@
+{
+  "sample_rate": 16000,
+  "block_ms": 25,
+  "blocks": 960,
+  "echo_delay_s": 0.53,
+  "class": "SubbandSuppressor",
+  "stats": {
+    "locked": true,
+    "delay_ms": 525.8125,
+    "adapted": true,
+    "far_s": 24.0,
+    "near_s": 24.0,
+    "suppress_db": 7.227104312340053,
+    "far_frames": 699
+  },
+  "tail_erle_db": 6.40701357236717
+}
