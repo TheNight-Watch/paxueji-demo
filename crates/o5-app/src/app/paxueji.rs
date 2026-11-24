@@ -46,6 +46,7 @@ pub(super) struct Paxueji {
     pub photo_gen: u64,
     /// 测试通道注入的 16k 单声道 PCM：有数据时代替麦克风上行。
     pub inject: VecDeque<u8>,
+    pub reconnects: u32,
 }
 
 impl App {
@@ -54,7 +55,8 @@ impl App {
             let mut p = self.paxueji.lock().unwrap();
             let gen = p.photo_gen + 1;
             let inject = std::mem::take(&mut p.inject);
-            *p = Paxueji { photo_gen: gen, inject, ..Paxueji::default() };
+            let reconnects = p.reconnects;
+            *p = Paxueji { photo_gen: gen, inject, reconnects, ..Paxueji::default() };
             drop(p);
             self.state.set_frozen(None);
             self.stop_talking();
@@ -233,8 +235,47 @@ impl App {
     }
 
     /// 定格中用定格帧代替实时帧上行（mic 线程每 unit 调一次）。
-    pub(super) fn frozen_frame(&self) -> Option<String> {
-        self.paxueji.lock().unwrap().frozen_jpeg.clone()
+    /// 每个 unit 上行的画面：定格时是照片，取景时是一张同尺寸的纯灰图。
+    /// 服务端要求同一会话帧尺寸不变（协议层的 8×8 黑帧占位会让它直接断会话），
+    /// 而取景画面又不能给模型看（否则它会自己对着取景讲），所以用灰图占位。
+    pub(super) fn uplink_frame(&self) -> Option<String> {
+        static BLANK: std::sync::OnceLock<Option<String>> = std::sync::OnceLock::new();
+        if let Some(f) = self.paxueji.lock().unwrap().frozen_jpeg.clone() {
+            return Some(f);
+        }
+        BLANK
+            .get_or_init(|| {
+                PreviewFrame { width: 640, height: 480, data: vec![128; 640 * 480 * 3] }.to_jpeg_b64(60)
+            })
+            .clone()
+    }
+
+    /// 会话被服务端异常断开时自动重连（最多连续 3 次，就绪后清零），
+    /// 演示中遇到一次服务端抖动不至于卡在「点我重连」。
+    pub(super) fn schedule_reconnect(&self) {
+        let attempt = {
+            let mut p = self.paxueji.lock().unwrap();
+            p.reconnects += 1;
+            p.reconnects
+        };
+        if attempt > 3 {
+            log::warn!(target: "o5.main", "[拍学机] 连续重连 3 次失败，等孩子点「点我重连」");
+            return;
+        }
+        let weak = self.weak.clone();
+        let _ = std::thread::Builder::new().name("pax-reconnect".into()).spawn(move || {
+            std::thread::sleep(Duration::from_secs(3));
+            if let Some(app) = weak.upgrade() {
+                if !app.session_running() {
+                    log::info!(target: "o5.main", "[拍学机] 自动重连（第 {attempt} 次）");
+                    app.start_session();
+                }
+            }
+        });
+    }
+
+    pub(super) fn reset_reconnects(&self) {
+        self.paxueji.lock().unwrap().reconnects = 0;
     }
 
     /// 定格帧随本 unit 上行后，补发快门那句话（只发一次）。

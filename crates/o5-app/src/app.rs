@@ -785,7 +785,7 @@ impl App {
         }
         // 拍学机只在按下快门后让模型看画面：取景时不上行摄像头帧（协议层补黑帧），
         // 否则模型会自己对着取景画面讲起来，抢在照片讲解前面。
-        let video: Option<String> = self.frozen_frame();
+        let video: Option<String> = self.uplink_frame();
         // tts-center 转写：扬声器出声时不喂真实音频（回声抑制），打断语音
         // 不上字幕。gate 期间改喂等长静音而非断流——断流会让服务端把残余
         // 解码缓冲再 flush 一条重复 final（用户句在 AI 回复后"再出现一次"
@@ -1216,7 +1216,10 @@ impl SessionListener for App {
         self.state.set_session_state(phase_of(s));
         self.state.set_session_detail("");
         match s {
-            SessionState::Ready => self.start_media(),
+            SessionState::Ready => {
+                self.reset_reconnects();
+                self.start_media()
+            }
             SessionState::Failed | SessionState::Closed => {
                 self.stop_media();
                 let reason = self.last_error.lock().unwrap().take().unwrap_or_default();
@@ -1225,6 +1228,8 @@ impl SessionListener for App {
                 if s == SessionState::Failed && self.headless {
                     *self.exit_code.lock().unwrap() = 1;
                     self.shutdown.store(true, Ordering::SeqCst);
+                } else if s == SessionState::Failed {
+                    self.schedule_reconnect();
                 }
                 self.check_session_minutes();
             }
