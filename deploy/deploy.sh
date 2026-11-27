@@ -13,7 +13,7 @@ APP_DIR=/maixapp/apps/paxueji
 DEVICE_CONFIG=/root/paxueji_config.json
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 ZIG_DIR=${ZIG_DIR:-$HOME/.local/zigvenv/lib/python3.14/site-packages/ziglang}
-ASSETS=${PAXUEJI_ASSETS:-$ROOT/../../鹏越仓库/maixcam2_o5_voice_py/assets}
+SIGNATURE_DIR=${PAXUEJI_ASSETS:-}   # 可选：存放 MiniCPM 标志音色 ref_minicpm_signature_fix.wav 的目录
 SSH=(ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$HOST")
 
 build=1 write_config=0
@@ -30,15 +30,26 @@ if [[ $build == 1 ]]; then
   (cd "$ROOT" && PATH="$PATH:$ZIG_DIR" cargo zigbuild --release --target aarch64-unknown-linux-gnu -p o5-app)
 fi
 [[ -x $BIN ]] || { echo "找不到二进制 $BIN" >&2; exit 1; }
-[[ -d $ASSETS ]] || { echo "找不到音色目录 $ASSETS（设 PAXUEJI_ASSETS）" >&2; exit 1; }
+# 音色：仓库自带开源中文音色（assets/voices，默认 zh-female-bright）。MiniCPM 标志音色是内部素材、
+# 不随仓库分发；PAXUEJI_ASSETS 指向它所在目录，或板子上装过「A0 O5 Voice」时，会一并带上。
+BOARD_SIGNATURE=/maixapp/apps/o5_harness_rs/assets/ref_minicpm_signature_fix.wav
+SIGNATURE=""
+if [[ -n $SIGNATURE_DIR && -f $SIGNATURE_DIR/ref_minicpm_signature_fix.wav ]]; then
+  SIGNATURE=$SIGNATURE_DIR/ref_minicpm_signature_fix.wav
+elif "${SSH[@]}" "test -f $BOARD_SIGNATURE"; then
+  SIGNATURE=board
+fi
 
 stage=$(mktemp -d)
 trap 'rm -rf "$stage"' EXIT
 cp "$BIN" "$ROOT"/deploy/{feeder_display.py,feeder_camera.py,app.yaml,main.py,icon.png} "$stage/"
-mkdir "$stage/assets" && cp "$ASSETS"/*.wav "$stage/assets/"
+mkdir "$stage/assets"
+cp "$ROOT"/assets/voices/*.wav "$stage/assets/"
+[[ -n $SIGNATURE && $SIGNATURE != board ]] && cp "$SIGNATURE" "$stage/assets/"
 
 "${SSH[@]}" "pkill -f '$APP_DIR/o5-harness-r[s]' 2>/dev/null; mkdir -p $APP_DIR; true"
 scp -q -o BatchMode=yes -r "$stage"/. "root@$HOST:$APP_DIR/"
+[[ $SIGNATURE == board ]] && "${SSH[@]}" "cp $BOARD_SIGNATURE $APP_DIR/assets/"
 "${SSH[@]}" "chmod 755 $APP_DIR && chmod +x $APP_DIR/o5-harness-rs $APP_DIR/main.py && python3 /maixapp/apps/gen_app_info.py >/dev/null && sync"
 
 if [[ $write_config == 1 ]] || ! "${SSH[@]}" "test -f $DEVICE_CONFIG"; then

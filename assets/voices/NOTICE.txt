@@ -1,0 +1,13 @@
+拍学机自带的中文参考音色（16 kHz 单声道 PCM16 WAV），可随仓库自由分发。
+
+zh-female-bright.wav   AISHELL-3（OpenSLR 93，https://www.openslr.org/93/），说话人 SSB0057  ← 默认
+zh-female-calm.wav     AISHELL-3，说话人 SSB1135
+zh-male-young.wav      AISHELL-3，说话人 SSB1630
+zh-male-deep.wav       AISHELL-3，说话人 SSB0273
+
+AISHELL-3 采用 Apache License 2.0（https://www.apache.org/licenses/LICENSE-2.0），
+语料版权归北京希尔贝壳科技有限公司。以上片段选自该语料，转为 16 kHz 单声道 PCM16 WAV。
+
+MiniCPM-o 标志音色（ref_minicpm_signature_fix.wav）是项目内部训练参考音频，不随仓库分发。
+有这个文件时，用 PAXUEJI_ASSETS 指向它所在目录部署，再把设备配置 foreground.voice
+改成 builtin:ref_minicpm_signature_fix.wav 即可；板子上装过「A0 O5 Voice」的，部署脚本会自动带上。

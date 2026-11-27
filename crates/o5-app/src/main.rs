@@ -230,12 +230,19 @@ fn run() -> i32 {
     }
 
     // 音色（generate_audio 需要；assets 随可执行文件部署在 <exe_dir>/assets）
+    const FALLBACK_VOICE: &str = "builtin:zh-female-bright.wav";
     let assets_dir = exe_dir().join("assets");
     if let Err(e) = cfg.load_voice(&assets_dir) {
         log::error!(target: "o5.main", "{e}");
-        let has_tts = cfg.fg_init_payload.get("tts_prompt_audio").is_some_and(app::py_truthy);
-        if !has_tts {
-            return 2;
+        // 配置里的音色文件不在（比如 MiniCPM 标志音色没随仓库分发），改用仓库自带的开源音色
+        cfg.fg_voice = FALLBACK_VOICE.to_string();
+        if cfg.load_voice(&assets_dir).is_ok() {
+            log::warn!(target: "o5.main", "改用仓库自带音色 {FALLBACK_VOICE}");
+        } else {
+            let has_tts = cfg.fg_init_payload.get("tts_prompt_audio").is_some_and(app::py_truthy);
+            if !has_tts {
+                return 2;
+            }
         }
     }
     if let Some(voice) = cfg.voice().filter(|v| !v.is_empty()) {

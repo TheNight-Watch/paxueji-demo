@@ -15,7 +15,7 @@
     "refAudioSegment": true,
     "taskPrompt": "",
     "initPayload": {},
-    "voice": "builtin:ref_minicpm_signature_fix.wav",
+    "voice": "builtin:zh-female-bright.wav",
     "autoStartSession": true
   },
   "vacuum": {
